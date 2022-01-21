@@ -5,22 +5,22 @@
     - Data Preprocessing (MAESTRO Dataset):
         * Structure:  
             ```
-            --MAESTRO  
-            |---- Rendered  
+            MAESTRO  
+            |-- Rendered  
             |  
-            |---- Metadata  
-            |-------- filename-2004.txt  
-            |-------- filename-2005.txt  
-            |-------- ......  
-            |-------- train.txt (e.g. 2004/filename1, 2004/filename2)  
-            |-------- valid.txt  
-            |-------- test.txt  
+            |-- Metadata  
+            |---- filename-2004.txt  
+            |---- filename-2005.txt  
+            |---- ......  
+            |---- train.txt (e.g. 2004/filename1, 2004/filename2)  
+            |---- valid.txt  
+            |---- test.txt  
             |  
-            |---- pedal-dataset  
-            |-------- pedal-onset-dataset  
-            |------------ pedal  
-            |------------ non-pedal  
-            |-------- pedal-segment-dataset  
+            |-- pedal-dataset  
+            |---- pedal-onset-dataset  
+            |------ pedal  
+            |------ non-pedal  
+            |---- pedal-segment-dataset  
             ```  
             
         -  Run `data_preprocess.ipynb` to create non-pedal midi pairs
