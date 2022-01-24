@@ -20,7 +20,7 @@ TRIM_SECOND_BEFORE = 0.2
 TRIM_SECOND_AFTER = 0.3
 ONSET_INPUT_SHAPE = (1, int(SR * (TRIM_SECOND_BEFORE + TRIM_SECOND_AFTER)))
 MIN_SRC = 0.3
-MAX_SRC = 2.3
+MAX_SRC = 2.0  # 2.3
 LEN_SRC = 2.0
 NSP_SRC = int(SR * LEN_SRC)
 SEGMENT_INPUT_SHAPE = (1, NSP_SRC)
@@ -30,6 +30,7 @@ FOLDERS = ['train', 'valid', 'test']
 with open('config.json') as json_data:
     config = json.load(json_data)
 
+DIR_ORIG = config['dir_original']
 DIR_RENDERED = config['dir_rendered']
 DIR_PEDAL_METADATA = config['dir_pedal_metadata']
 DIR_PEDAL_ONSET = config['dir_pedal_onset']

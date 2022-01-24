@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 import pretty_midi
 import librosa
+from multiprocessing import Pool
 
 from global_config import *
 
@@ -37,9 +38,10 @@ def prep_pedal_onset():
             os.makedirs(npfolder_path)
 
         for filename in filenames:  # filenames in Train
+            filename = filename.decode('utf-8')
             print('  {}..'.format(filename))
-            midi_path = os.path.join(DIR_RENDERED, '{}.mid'.format(filename))
-            paudio_path = os.path.join(DIR_RENDERED, '{}-p.wav'.format(filename))  ## check: no '-p'
+            midi_path = os.path.join(DIR_ORIG, '{}.midi'.format(filename))
+            paudio_path = os.path.join(DIR_ORIG, '{}.wav'.format(filename))  ## check: no '-p'
             npaudio_path = os.path.join(DIR_RENDERED, '{}-np.wav'.format(filename))
             paudio, sr = librosa.load(paudio_path, sr=SR)
             npaudio, sr = librosa.load(npaudio_path, sr=SR)
@@ -67,7 +69,7 @@ def prep_pedal_onset():
 
                 if start_sp > 0 and end_sp < len(npaudio):
                     pout_name = '{}-p_{}.wav'.format(newfilename, seg_idx)
-                    pout_path = os.path.join(pfolder_path, pout_name)            
+                    pout_path = os.path.join(pfolder_path, pout_name)
                     librosa.output.write_wav(pout_path, paudio[start_sp:end_sp], SR)
                     filename_segs.append(pout_name.rstrip('.wav'))
                     filepaths.append(os.path.join(folder, 'pedal-onset/', pout_name))
@@ -113,9 +115,11 @@ def prep_pedal_segment():
             os.makedirs(npfolder_path)
 
         for filename in filenames:
+            filename = filename.decode('utf-8')
             print('  {}..'.format(filename))
             # get pedal segment from midi
-            midi_path = os.path.join(PATH_DATASET, '{}.mid'.format(filename))
+            # midi_path = os.path.join(PATH_DATASET, '{}.midi'.format(filename))
+            midi_path = os.path.join(DIR_ORIG, '{}.midi'.format(filename))
             pm = pretty_midi.PrettyMIDI(midi_path)
             pedal_v = []
             pedal_t = []
@@ -147,7 +151,7 @@ def prep_pedal_segment():
             if correct_pedal_data:
                 pedal_onset_sp = librosa.time_to_samples(pedal_onset, sr=SR)
                 pedal_offset_sp = librosa.time_to_samples(pedal_offset, sr=SR)
-                paudio_path = os.path.join(DIR_RENDERED, '{}-p.wav'.format(filename))
+                paudio_path = os.path.join(DIR_ORIG, '{}.wav'.format(filename))
                 npaudio_path = os.path.join(DIR_RENDERED, '{}-np.wav'.format(filename))
                 paudio, sr = librosa.load(paudio_path, sr=SR)
                 npaudio, sr = librosa.load(npaudio_path, sr=SR)
@@ -160,7 +164,7 @@ def prep_pedal_segment():
                     if len_sp >= min_sp and end_sp < len(npaudio):
                         newfilename = filename.replace('/','-')
                         pout_name = '{}-p_{}.wav'.format(newfilename, seg_idx)
-                        pout_path = os.path.join(pfolder_path, pout_name)            
+                        pout_path = os.path.join(pfolder_path, pout_name) 
                         librosa.output.write_wav(pout_path, paudio[start_sp:end_sp], SR)
                         filename_segs.append(pout_name.rstrip('.wav'))
                         filepaths.append(os.path.join(folder, 'pedal-segment/', pout_name))
@@ -195,8 +199,10 @@ def print_usage():
 def main(args):
     dataset_name = args.dataset_name
     if dataset_name == 'pedal-onset-dataset':
+        print('[*]Processing onset dataset...')
         prep_pedal_onset()
     elif dataset_name == 'pedal-segment-dataset':
+        print('[*]Processing segment dataset...')
         prep_pedal_segment()
     else:
         print_usage()
@@ -205,4 +211,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Preprocess the rendered audio to trim it into excerpts.") 
     parser.add_argument("dataset_name", type=str, help="name of the dataset.")
-    main(parser.parse_args()) 
+    # main(parser.parse_args()) 
+    pool = Pool(processes=20)
+    pool.map(main, [parser.parse_args()])
+    pool.close()
