@@ -1,0 +1,11 @@
+{
+  "dir_original": "../../maestro-v3.0.0/Original",
+  "dir_rendered": "../../SV_160/audio",
+  "dir_pedal_metadata" : "../../maestro-v3.0.0/pedal-metadata",
+  "dir_pedal_onset" : "../../SV_160/pedal-dataset/pedal-onset-dataset",
+  "dir_pedal_segment": "../../SV_160/pedal-dataset/pedal-segment-dataset",
+  "dir_pedal_onset_npy" : "../../maestro-v3.0.0/pedal-dataset/pedal-onset-npydataset",
+  "dir_pedal_segment_npy": "../../maestro-v3.0.0/pedal-dataset/pedal-segment-npydataset",
+  "dir_save_model": "./save-model",
+  "dir_real_data": "../../maestro-v3.0.0/pedal-dataset/pedaldata-0527"
+}
