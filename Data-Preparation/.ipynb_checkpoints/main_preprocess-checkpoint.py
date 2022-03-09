@@ -30,8 +30,7 @@ def prep_pedal_onset():
         txt_path = os.path.join(DIR_PEDAL_METADATA,'{}.txt'.format(folder))  # pedal_metadata, train, txt
         filenames = np.genfromtxt(txt_path, dtype=None)
 
-        #pfolder_path = os.path.join(DIR_PEDAL_ONSET, folder, 'pedal-onset/')  # pedal_onset_dataset
-        pfolder_path = os.path.join('../../../maestro-v3.0.0/shift-dataset/')
+        pfolder_path = os.path.join(DIR_PEDAL_ONSET, folder, 'pedal-onset/')  # pedal_onset_dataset
         npfolder_path = os.path.join(DIR_PEDAL_ONSET, folder, 'non-pedal-onset/')
         if not os.path.exists(pfolder_path):
             os.makedirs(pfolder_path)
@@ -45,7 +44,7 @@ def prep_pedal_onset():
             paudio_path = os.path.join(DIR_ORIG, '{}.wav'.format(filename))  ## check: no '-p'
             npaudio_path = os.path.join(DIR_RENDERED, '{}-np.wav'.format(filename))
             paudio, sr = librosa.load(paudio_path, sr=SR)
-            #npaudio, sr = librosa.load(npaudio_path, sr=SR)
+            npaudio, sr = librosa.load(npaudio_path, sr=SR)
 
             # get ground truth pedal onset time from midi
             pm = pretty_midi.PrettyMIDI(midi_path)
